@@ -1,0 +1,9 @@
+.collection-meta {
+    font-size: 0.8rem;
+    margin-bottom: map-get($spacers, 1);
+    padding: 0 map-get($spacers, 2);
+}
+
+.collection-item-img {
+    width: 100%;
+}

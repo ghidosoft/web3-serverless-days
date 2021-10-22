@@ -1,0 +1,27 @@
+.gallery-img {
+    position: relative;
+
+    img {
+        max-width: 300px;
+        width: 100%;
+    }
+}
+
+.gallery-img-id {
+    color: $yellow;
+}
+
+.gallery-meta {
+    width: 100%;
+
+    th {
+        margin: 0;
+        padding: 0 map-get($spacers, 2);
+        text-align: right;
+    }
+
+    td {
+        margin: 0;
+        padding: 0 map-get($spacers, 5);
+    }
+}
