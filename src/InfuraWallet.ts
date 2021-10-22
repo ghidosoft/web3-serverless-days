@@ -12,7 +12,7 @@ class InfuraWallet<T extends ethers.providers.Provider = ethers.providers.Provid
         this._provider = provider;
         provider.on('block', () => this.emitBlock());
         provider.on('error', (err) => this.emit('error', err));
-        throw new Error('TODO create contract');
+        this._contract = new ethers.Contract(config.contract, config.contractAbi, provider);
         if (autoConnect) {
             setTimeout(() => this.setState(WalletState.Disconnected), 0);
         }
@@ -33,30 +33,37 @@ class InfuraWallet<T extends ethers.providers.Provider = ethers.providers.Provid
     }
 
     async getPrice(): Promise<ethers.BigNumber> {
-        throw new Error('TODO call contract');
+        return await this._contract.price();
     }
 
     async getMaxBatch(): Promise<number> {
-        throw new Error('TODO call contract and convert to number');
+        const value: ethers.BigNumber = await this._contract.maxBatch();
+        return value.toNumber();
     }
 
     async getMaxSupply(): Promise<number> {
-        throw new Error('TODO');
+        const value: ethers.BigNumber = await this._contract.maxSupply();
+        return value.toNumber();
     }
     async getTotalSupply(): Promise<number> {
-        throw new Error('TODO');
+        const value: ethers.BigNumber = await this._contract.totalSupply();
+        return value.toNumber();
     }
 
     async baseUri(): Promise<string> {
-        throw new Error('TODO');
+        const value: string = await this._contract.baseUri();
+        return value;
     }
 
     async balanceOf(address: string): Promise<number> {
-        throw new Error('TODO');
+        const value: ethers.BigNumber = await this._contract.balanceOf(address);
+        return value.toNumber();
     }
 
     async tokenOfOwnerByIndex(address: string, index: number): Promise<number> {
-        throw new Error('TODO call contract with parameters');
+        const value: ethers.BigNumber = await this._contract.tokenOfOwnerByIndex(
+            ethers.utils.getAddress(address), ethers.BigNumber.from(index));
+        return value.toNumber();
     }
 }
 

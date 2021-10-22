@@ -44,12 +44,11 @@ class JsonRpcWallet extends InfuraWallet<ethers.providers.JsonRpcProvider> imple
     }
 
     private createContract(): ethers.Contract {
-        throw new Error('TODO create contract with signer or provider');
         if (this.account) {
             const signer = this._provider.getSigner(this.account);
-            // TODO
+            return new ethers.Contract(config.contract, config.contractAbi, signer);
         } else {
-            // TODO
+            return new ethers.Contract(config.contract, config.contractAbi, this._provider);
         }
     }
 
@@ -82,9 +81,13 @@ class JsonRpcWallet extends InfuraWallet<ethers.providers.JsonRpcProvider> imple
     }
 
     async mint(count: number): Promise<string> {
-        throw new Error('TODO');
-        // this.emitTxEvents(tx);
-        // return tx.hash;
+        const amount = await this.getPrice();
+        const overrides = {
+            value: amount.mul(count),
+        };
+        const tx = await this._contract.mint(count, overrides);
+        this.emitTxEvents(tx);
+        return tx.hash;
     }
 }
 
